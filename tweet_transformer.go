@@ -53,6 +53,7 @@ func msgToWordMap(msg string) map[string]int {
 
 	// Remove Tags, Hashtags and URLs.
 	for i, wrd := range splitMsg {
+
 		if strings.HasPrefix(wrd, "@") ||
 			strings.HasPrefix(wrd, "@") ||
 			strings.Contains(wrd, "https://") ||
@@ -61,6 +62,7 @@ func msgToWordMap(msg string) map[string]int {
 			continue
 		}
 
+		// Deal with words regarding "I"
 		isDone := true
 		switch wrd {
 		case "i":
@@ -78,9 +80,13 @@ func msgToWordMap(msg string) map[string]int {
 		default:
 			isDone = false
 		}
+
 		if isDone {
 			continue
 		}
+
+		// Deal with Non-Latin and Irrelevant Charactors.
+		newWord := ""
 
 	}
 
