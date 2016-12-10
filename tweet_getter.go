@@ -61,7 +61,9 @@ func (tg *TweetGetter) start() {
 			switch msg.(type) {
 			case *twitter.Tweet:
 				tweet := msg.(*twitter.Tweet)
-				tg.chTweets <- tweet.Text
+				if tweet.Lang == "en" {
+					tg.chTweets <- tweet.Text
+				}
 			}
 		case <-tg.chStop:
 			return

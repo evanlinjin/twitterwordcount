@@ -37,6 +37,7 @@ func (tt *TweetTransformer) stop() {
 	tt.chStop <- 0
 }
 
+// TODO: Fix algorithm.
 func msgToWordMap(msg string) map[string]int {
 	wordMap := map[string]int{}
 
@@ -55,7 +56,7 @@ func msgToWordMap(msg string) map[string]int {
 	for i, wrd := range splitMsg {
 
 		if strings.HasPrefix(wrd, "@") ||
-			strings.HasPrefix(wrd, "@") ||
+			strings.HasPrefix(wrd, "#") ||
 			strings.Contains(wrd, "https://") ||
 			strings.Contains(wrd, "http://") {
 			splitMsg[i] = ""
@@ -86,9 +87,34 @@ func msgToWordMap(msg string) map[string]int {
 		}
 
 		// Deal with Non-Latin and Irrelevant Charactors.
-		//newWord := ""
-
+		newWord := []byte{}
+		for j := 0; j < len(wrd); j++ {
+			if isLatin(wrd[j]) || wrd[j] == '\'' {
+				newWord = append(newWord, wrd[j])
+			} else {
+				newWord = append(newWord, ' ')
+			}
+		}
+		newWordSplit := strings.Split(string(newWord), " ")
+		for _, newWrd := range newWordSplit {
+			splitMsg = append(splitMsg, newWrd)
+		}
 	}
 
+	// Fill wordMap >>
+	for _, wrd := range splitMsg {
+		if wrd != "" && wrd != " " {
+			wordMap[wrd] += 1
+		}
+	}
+
+	fmt.Println("[msg]:", msg)
+	fmt.Println("[splitMsg]:", splitMsg)
+	fmt.Println("[wordMap]:", wordMap)
+
 	return wordMap
+}
+
+func isLatin(c byte) bool {
+	return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
 }
