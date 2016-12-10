@@ -86,7 +86,7 @@ func msgToWordMap(msg string) map[string]int {
 		}
 
 		// Deal with Non-Latin and Irrelevant Charactors.
-		newWord := ""
+		//newWord := ""
 
 	}
 
