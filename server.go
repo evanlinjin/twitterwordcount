@@ -1,11 +1,5 @@
 package main
 
-import (
-	"fmt"
-	"log"
-	"net/http"
-)
-
 var chTweets chan string = make(chan string)
 
 func main() {
@@ -17,15 +11,11 @@ func main() {
 	tweetTransformer := makeTweetTransformer(tweetGetter.chTweets)
 	go tweetTransformer.start()
 
+	// Word Storer >>
+	wordStorer := makeWordStorer(tweetTransformer.chOut)
+	go wordStorer.start()
+
 	// API Server >>
-	http.HandleFunc("/v1/words", v1Words)
-	go log.Fatal(http.ListenAndServe(":8080", nil))
-
-}
-
-func v1Words(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("[REQUEST]", r.URL.String())
-	msg := <-chTweets
-	fmt.Println("[RESPONSE]", msg)
-	fmt.Fprintln(w, msg)
+	wordApi := makeWordApi(":8080", wordStorer)
+	wordApi.start()
 }

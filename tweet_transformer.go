@@ -5,14 +5,14 @@ import (
 	"strings"
 )
 
-func makeTweetTransformer(chTweets chan string) TweetTransformer {
+func makeTweetTransformer(chTweets chan string) *TweetTransformer {
 	transformer := TweetTransformer{
 		chIn:   chTweets,
 		chOut:  make(chan map[string]int),
 		chStop: make(chan int),
 	}
 
-	return transformer
+	return &transformer
 }
 
 type TweetTransformer struct {
@@ -108,9 +108,9 @@ func msgToWordMap(msg string) map[string]int {
 		}
 	}
 
-	fmt.Println("[msg]:", msg)
-	fmt.Println("[splitMsg]:", splitMsg)
-	fmt.Println("[wordMap]:", wordMap)
+	//fmt.Println("[msg]:", msg)
+	//fmt.Println("[splitMsg]:", splitMsg)
+	//fmt.Println("[wordMap]:", wordMap)
 
 	return wordMap
 }

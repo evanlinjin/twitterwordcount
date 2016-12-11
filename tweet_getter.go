@@ -9,7 +9,7 @@ import (
 	"github.com/dghubble/oauth1"
 )
 
-func makeTweetGetter(path string, maxStore int) TweetGetter {
+func makeTweetGetter(path string, maxStore int) *TweetGetter {
 	fileData, err := ioutil.ReadFile(path)
 	if err != nil {
 		log.Fatalln(err)
@@ -28,7 +28,7 @@ func makeTweetGetter(path string, maxStore int) TweetGetter {
 		chStop:         make(chan int, 1),
 	}
 
-	return getter
+	return &getter
 }
 
 type TweetGetter struct {
