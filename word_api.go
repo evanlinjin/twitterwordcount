@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 func makeWordApi(port string, wordStorer *WordStorer) *WordApi {
@@ -25,5 +26,9 @@ func (wa *WordApi) start() {
 }
 
 func (wa *WordApi) v1WordsEndpoint(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, wa.wordStorer.getWords(10))
+	count, err := strconv.Atoi(r.URL.Query().Get("count"))
+	if err != nil {
+		count = 0
+	}
+	fmt.Fprintln(w, wa.wordStorer.getWords(count))
 }

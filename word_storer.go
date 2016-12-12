@@ -56,7 +56,9 @@ func (ws *WordStorer) getWords(maxN int) string {
 	// Sort 'sortedDict'.
 	sort.Sort(sort.Reverse(sortedDict))
 	// Slice 'sortedDict'.
-	sortedDict = sortedDict[:maxN]
+	if maxN > 0 && maxN < len(sortedDict) {
+		sortedDict = sortedDict[:maxN]
+	}
 	// Turn to json.
 	b, err := json.Marshal(sortedDict)
 	if err != nil {
