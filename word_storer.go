@@ -34,7 +34,7 @@ func (ws *WordStorer) start() {
 				ws.dict[wrd] += cnt
 			}
 			ws.muxDict.Unlock()
-			fmt.Println(ws.dict)
+			//fmt.Println(ws.dict)
 		case <-ws.chStop:
 			return
 		}
